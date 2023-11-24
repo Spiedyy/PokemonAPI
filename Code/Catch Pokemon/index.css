@@ -1,0 +1,42 @@
+.animation {
+    animation: slideInFromTop 1s ease-in;
+}
+
+@keyframes slideInFromTop {
+    0% {
+        transform: translate3d(100px, -400px, 0);
+    }
+    100% {
+        transform: translate3d(0, 0, 0);
+    }
+}
+
+.fadein {
+    animation: FadeIn 0.8s ease-in;
+    animation-iteration-count: 1;
+    animation-fill-mode: forwards;
+}
+
+@keyframes FadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+     }
+}
+
+.fadeout {
+    animation: FadeOut 0.8s ease-in;
+    animation-iteration-count: 1;
+    animation-fill-mode: forwards;
+}
+
+@keyframes FadeOut {
+    0% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+     }
+}
