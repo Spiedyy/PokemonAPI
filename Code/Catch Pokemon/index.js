@@ -18,20 +18,6 @@ function getRandomInt() {
     return Math.floor(Math.random() * Math.floor(1017));
 }
 
-
-function getPokemonsFromStorage() {
-    const storedPokemons = localStorage.getItem('Pokemons');
-    if (storedPokemons) {
-        return JSON.parse(storedPokemons);
-    } else {
-        return [];
-    }
-}
-
-function updateLocalStorage(pokemons) {
-    localStorage.setItem('Pokemons', JSON.stringify(pokemons));
-}
-
 async function fetchData() {
     try {
         audio = new Audio(BattleSound);
@@ -45,6 +31,19 @@ async function fetchData() {
     } catch (error) {
         console.error('Error fetching data:', error);
     }
+}
+
+function getPokemonsFromStorage() {
+    const storedPokemons = localStorage.getItem('Pokemons');
+    if (storedPokemons) {
+        return JSON.parse(storedPokemons);
+    } else {
+        return [];
+    }
+}
+
+function updateLocalStorage(pokemons) {
+    localStorage.setItem('Pokemons', JSON.stringify(pokemons));
 }
 
 catchpokemon.addEventListener('click', () => {

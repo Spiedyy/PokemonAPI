@@ -1,0 +1,14 @@
+body {
+    font-family: '8BIT WONDER', sans-serif;
+}
+
+.bg-body-image {
+    background-image: url('../../Images+Audio/Tilebg.gif ');
+    background-size: auto;
+    background-repeat: repeat;
+}
+
+.enlarged {
+    transform: scale(0.5);
+    transform-origin: center;
+}
