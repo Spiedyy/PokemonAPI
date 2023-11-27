@@ -35,10 +35,9 @@ async function fetchAllPokemonFromRange(startId, endId) {
 }
 
 const startId = 1;
-const maxCount = 100;
+const maxCount = 10;
 const endId = startId + maxCount - 1;
 
-// create a card for each pokemon
 function createcard() {
   for (let i = 0; i < pokemondata.length; i++) {
     const pokemoncard = pokemonTemplate.cloneNode(true);
@@ -139,15 +138,51 @@ function getColorForType(type) {
   return typeToColor[type] || "bg-gray-300";
 }
 
+function filterPokemonCards() {
+  const filterType = document.querySelectorAll("input[type='checkbox']");
+
+  filterType.forEach((checkbox) => {
+    checkbox.addEventListener("change", function () {
+      const checkedTypes = Array.from(filterType)
+        .filter((checkbox) => checkbox.checked)
+        .map((checkbox) => checkbox.value);
+
+      const pokemonCards = document.querySelectorAll("[id^='pokemoncard']");
+
+      pokemonCards.forEach((card, index) => {
+        if (index !== 0) { // Skip the first template card
+          const cardTypes = card.dataset.types;
+
+          if (cardTypes !== undefined && cardTypes !== null) {
+            const typesArray = cardTypes.split(",");
+            const cardId = card.id;
+            console.log(typesArray);
+            console.log(cardId);
+
+            console.log(checkedTypes);
+
+            // last if statement is not working
+            if (checkedTypes.length === 0 || checkedTypes.some((type) => typesArray.includes(type))) {
+              console.log();
+              document.getElementById(cardId).classList.remove("hidden");
+            } else {
+              document.getElementById(cardId).classList.add("hidden");
+            }
+          }
+        }
+      });
+    });
+  });
+}
+
 fetchAllPokemonFromRange(startId, endId)
   .then((pokemonDataArray) => {
-    // Here you can work with the fetched data after it's available
     console.log("Pokemons fetched:", (pokemondata = pokemonDataArray));
     createcard();
     stylePokemonCards();
     createFilter();
+    filterPokemonCards();
   })
   .catch((error) => {
-    // Handle any errors that occurred during data fetching
     console.error("Error:", error);
   });
