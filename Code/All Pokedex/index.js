@@ -35,7 +35,7 @@ async function fetchAllPokemonFromRange(startId, endId) {
 }
 
 const startId = 1;
-const maxCount = 10;
+const maxCount = 100;
 const endId = startId + maxCount - 1;
 
 function createcard() {
@@ -82,24 +82,24 @@ function stylePokemonCards() {
 }
 
 const pokemonTypes = [
-  "Normal",
-  "Fire",
-  "Water",
-  "Electric",
-  "Grass",
-  "Ice",
-  "Fighting",
-  "Poison",
-  "Ground",
-  "Flying",
-  "Psychic",
-  "Bug",
-  "Rock",
-  "Ghost",
-  "Dragon",
-  "Dark",
-  "Steel",
-  "Fairy",
+  "normal",
+  "fire",
+  "water",
+  "electric",
+  "grass",
+  "ice",
+  "fighting",
+  "poison",
+  "ground",
+  "flying",
+  "psychic",
+  "bug",
+  "rock",
+  "ghost",
+  "dragon",
+  "dark",
+  "steel",
+  "fairy",
 ];
 
 function createFilter() {
@@ -150,23 +150,20 @@ function filterPokemonCards() {
       const pokemonCards = document.querySelectorAll("[id^='pokemoncard']");
 
       pokemonCards.forEach((card, index) => {
-        if (index !== 0) { // Skip the first template card
+        if (index !== 0) {
           const cardTypes = card.dataset.types;
 
           if (cardTypes !== undefined && cardTypes !== null) {
             const typesArray = cardTypes.split(",");
             const cardId = card.id;
-            console.log(typesArray);
-            console.log(cardId);
 
-            console.log(checkedTypes);
-
-            // last if statement is not working
-            if (checkedTypes.length === 0 || checkedTypes.some((type) => typesArray.includes(type))) {
-              console.log();
-              document.getElementById(cardId).classList.remove("hidden");
+            if (
+              !typesArray.some((type) => checkedTypes.includes(type)) &&
+              checkedTypes.length > 0
+            ) {
+              card.classList.add("hidden");
             } else {
-              document.getElementById(cardId).classList.add("hidden");
+              card.classList.remove("hidden");
             }
           }
         }
@@ -177,7 +174,7 @@ function filterPokemonCards() {
 
 fetchAllPokemonFromRange(startId, endId)
   .then((pokemonDataArray) => {
-    console.log("Pokemons fetched:", (pokemondata = pokemonDataArray));
+    pokemondata = pokemonDataArray
     createcard();
     stylePokemonCards();
     createFilter();
