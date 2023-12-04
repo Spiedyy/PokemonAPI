@@ -13,6 +13,7 @@ async function fetchPokemonById(pokemonId) {
       throw new Error("Network response was not ok.");
     }
     const pokemonData = await response.json();
+    console.log("success");
     return pokemonData;
   } catch (error) {
     console.error("Error fetching data:", error);
@@ -22,11 +23,12 @@ async function fetchPokemonById(pokemonId) {
 
 async function fetchAllPokemonFromRange(startId, endId) {
   try {
-    const pokemonDataArray = [];
+    const requests = [];
     for (let id = startId; id <= endId; id++) {
-      const pokemon = await fetchPokemonById(id);
-      pokemonDataArray.push(pokemon);
+      requests.push(fetchPokemonById(id));
     }
+
+    const pokemonDataArray = await Promise.all(requests);
     return pokemonDataArray;
   } catch (error) {
     console.error("Error fetching Pokemon:", error);
@@ -35,7 +37,7 @@ async function fetchAllPokemonFromRange(startId, endId) {
 }
 
 const startId = 1;
-const maxCount = 100;
+const maxCount = 1017;
 const endId = startId + maxCount - 1;
 
 function createcard() {
@@ -182,4 +184,10 @@ fetchAllPokemonFromRange(startId, endId)
   })
   .catch((error) => {
     console.error("Error:", error);
+  });
+
+  // on click of the catch pokemon button go to the catch pokemon page
+  const catchPokemon = document.getElementById("Catch");
+  catchPokemon.addEventListener("click", () => {
+    window.location.href = "../Catch Pokemon/index.html";
   });

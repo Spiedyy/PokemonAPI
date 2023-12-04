@@ -1,5 +1,7 @@
 let catchedpokemons = localStorage.getItem('Pokemons');
 catchedpokemons = JSON.parse(catchedpokemons);
+const filterclone = document.getElementById("filter");
+
 
 document.getElementById("Catch").addEventListener("click", () => {
     window.location.href = "../Catch Pokemon/index.html";
@@ -11,7 +13,7 @@ function addPokemonCardWithDelay(index) {
     if (index < catchedpokemons.length) {
         const template = document.getElementById('template');
         const pokemonTemplate = document.getElementById('pokemoncard');
-        
+
         const pokemoncard = pokemonTemplate.cloneNode(true);
         pokemoncard.id = `pokemoncard_${index}`;
         pokemoncard.classList.remove('hidden');
@@ -56,10 +58,76 @@ function stylePokemonCards() {
     }
 }
 
-//tailwind gradient werkt niet
-// Type foreach loop bug
+const pokemonTypes = [
+    "normal",
+    "fire",
+    "water",
+    "electric",
+    "grass",
+    "ice",
+    "fighting",
+    "poison",
+    "ground",
+    "flying",
+    "psychic",
+    "bug",
+    "rock",
+    "ghost",
+    "dragon",
+    "dark",
+    "steel",
+    "fairy",
+];
 
-// Function to get Tailwind CSS color class for a type
+function createFilter() {
+    for (let i = 0; i < pokemonTypes.length; i++) {
+        const filter = filterclone.cloneNode(true);
+        filter.id = `filter_${i}`;
+        filter.classList.remove("hidden");
+        filter.querySelector("label").innerHTML = pokemonTypes[i];
+        filter.querySelector("input").value = pokemonTypes[i];
+        filtertemplate.appendChild(filter);
+    }
+}
+
+createFilter();
+
+function filterPokemonCards() {
+    const filterType = document.querySelectorAll("input[type='checkbox']");
+
+    filterType.forEach((checkbox) => {
+        checkbox.addEventListener("change", function () {
+            const checkedTypes = Array.from(filterType)
+                .filter((checkbox) => checkbox.checked)
+                .map((checkbox) => checkbox.value);
+
+            const pokemonCards = document.querySelectorAll("[id^='pokemoncard']");
+
+            pokemonCards.forEach((card, index) => {
+                if (index !== 0) {
+                    const cardTypes = card.dataset.types;
+
+                    if (cardTypes !== undefined && cardTypes !== null) {
+                        const typesArray = cardTypes.split(",");
+                        const cardId = card.id;
+
+                        if (
+                            !typesArray.some((type) => checkedTypes.includes(type)) &&
+                            checkedTypes.length > 0
+                        ) {
+                            card.classList.add("hidden");
+                        } else {
+                            card.classList.remove("hidden");
+                        }
+                    }
+                }
+            });
+        });
+    });
+}
+
+filterPokemonCards();
+
 function getColorForType(type) {
     const typeToColor = {
         grass: 'green-400',
