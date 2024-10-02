@@ -15,6 +15,8 @@ function addPokemonCardWithDelay(index) {
         const pokemonTemplate = document.getElementById('pokemoncard');
 
         const pokemoncard = pokemonTemplate.cloneNode(true);
+        const seemore = pokemoncard.querySelector('#morebtn');
+        seemore.id = `morebtn_${index}`;
         pokemoncard.id = `pokemoncard_${index}`;
         pokemoncard.classList.remove('hidden');
         pokemoncard.dataset.types = catchedpokemons[index].types.map(type => type.type.name).join(',');
@@ -30,8 +32,23 @@ function addPokemonCardWithDelay(index) {
         }, 500 + 100 * index);
 
         addPokemonCardWithDelay(index + 1);
+
+        if (index === catchedpokemons.length - 1) {
+            pokemonTemplate.remove();
+        }
     }
 }
+
+setTimeout(() => {
+    const seemoreButtons = document.querySelectorAll('[id^="morebtn"]');
+
+    seemoreButtons.forEach((button, index) => {
+        button.addEventListener('click', () => {
+            console.log(catchedpokemons[index]);
+        });
+    });
+}, 500 + 100 * catchedpokemons.length);
+
 
 function stylePokemonCards() {
     const totalCards = catchedpokemons.length;
